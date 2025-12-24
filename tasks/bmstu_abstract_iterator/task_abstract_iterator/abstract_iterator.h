@@ -1,5 +1,6 @@
 #pragma once
 #include <cstddef>	// for std::ptrdiff_t
+#include <iterator>  // for iterator tags
 
 namespace bmstu
 {

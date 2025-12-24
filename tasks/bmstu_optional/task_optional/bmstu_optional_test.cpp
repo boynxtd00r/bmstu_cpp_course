@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <stack>
 
 struct Tracker
 {
@@ -765,6 +766,7 @@ TEST(Optional, ConstOptionalExceptionSafety)
 	ASSERT_NO_THROW(opt2.value());
 	ASSERT_EQ(opt2.value(), "Hello");
 }
+
 TEST(Optional, ExceptionWithTrackedObject)
 {
 	Tracker::reset();
@@ -781,4 +783,34 @@ TEST(Optional, ExceptionWithTrackedObject)
 	}
 	ASSERT_EQ(Tracker::param_ctor, 1);
 	ASSERT_EQ(Tracker::dtor, 1);
+}
+
+bmstu::optional<std::string> findCorrectBraceSequence(const std::string &seq)
+{
+    std::stack<char> braces;
+    for (char c : seq) {
+        if (c == '(') {
+            braces.push(c);
+        }
+        else if (c == ')') {
+            if (braces.empty()) {
+                return bmstu::nullopt;
+            }
+            braces.pop();
+        }
+    }
+    if (braces.empty()){
+        return seq;
+    }
+    else {
+        return bmstu::nullopt;
+    }
+}
+
+TEST(Optional, DummyFunc) {
+	ASSERT_EQ("(())()", findCorrectBraceSequence("(())()"));
+	ASSERT_EQ(bmstu::nullopt, findCorrectBraceSequence(")()"));
+	ASSERT_EQ("", findCorrectBraceSequence(""));
+	ASSERT_EQ(bmstu::nullopt, findCorrectBraceSequence(")"));
+	ASSERT_EQ(bmstu::nullopt, findCorrectBraceSequence("("));
 }

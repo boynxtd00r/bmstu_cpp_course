@@ -2,6 +2,8 @@
 
 #include <exception>
 #include <iostream>
+#include <initializer_list>
+#include <cstring>
 
 namespace bmstu
 {
@@ -39,10 +41,10 @@ class simple_basic_string
 	/// Деструктор
 	~simple_basic_string() {}
 
-	/// Геттер на си-строку
-	const T* c_str() const { return ptr_; }
+    /// Геттер на си-строку
+    const T* c_str() const { return ptr_; }
 
-	size_t size() const { return 0; }
+    size_t size() const { return size_; }
 
 	/// Оператор копирующего присваивания
 	simple_basic_string& operator=(simple_basic_string&& other)
@@ -84,18 +86,55 @@ class simple_basic_string
 
 	simple_basic_string& operator+=(T symbol) { return *this; }
 
-	T& operator[](size_t index) noexcept { return *(ptr_ + index); }
+    T& operator[](size_t index) noexcept 
+    { 
+        return ptr_[index]; 
+    }
 
-	T& at(size_t index) { throw std::out_of_range("Wrong index"); }
+    const T& operator[](size_t index) const noexcept 
+    { 
+        return ptr_[index]; 
+    }
 
-	T* data() { return ptr_; }
+    T& at(size_t index) 
+    { 
+        if (index >= size_) {
+            throw std::out_of_range("Wrong index");
+        }
+        return ptr_[index]; 
+    }
+
+    const T& at(size_t index) const
+    { 
+        if (index >= size_) {
+            throw std::out_of_range("Wrong index");
+        }
+        return ptr_[index]; 
+    }
+
+    T* data() { return ptr_; }
 
    private:
-	static size_t strlen_(const T* str) { return 0; }
+    static size_t strlen_(const T* str) 
+    {
+        if (!str) return 0;
+        size_t len = 0;
+        while (str[len] != 0) {
+            ++len;
+        }
+        return len;
+    }
 
-	void clean_() {}
+    void clean_() 
+    {
+        if (ptr_) {
+            delete[] ptr_;
+            ptr_ = nullptr;
+        }
+        size_ = 0;
+    }
 
-	T* ptr_ = nullptr;
-	size_t size_;
+    T* ptr_ = nullptr;
+    size_t size_ = 0;
 };
 }  // namespace bmstu
