@@ -128,7 +128,8 @@ class avl_balanced_tree
 			return node;
 		}
 
-		node->height = 1 + std::max(heightOfTree(node->left), heightOfTree(node->right));
+		node->height =
+			1 + std::max(heightOfTree(node->left), heightOfTree(node->right));
 
 		balance(node);
 
@@ -186,7 +187,8 @@ class avl_balanced_tree
 			return;
 		}
 
-		node->height = 1 + std::max(heightOfTree(node->left), heightOfTree(node->right));
+		node->height =
+			1 + std::max(heightOfTree(node->left), heightOfTree(node->right));
 
 		balance(node);
 	}
@@ -231,10 +233,12 @@ class avl_balanced_tree
 		tree_node<K, V>* k1 = k2->left;
 		k2->left = k1->right;
 		k1->right = k2;
-		
-		k2->height = 1 + std::max(heightOfTree(k2->left), heightOfTree(k2->right));
-		k1->height = 1 + std::max(heightOfTree(k1->left), heightOfTree(k1->right));
-		
+
+		k2->height =
+			1 + std::max(heightOfTree(k2->left), heightOfTree(k2->right));
+		k1->height =
+			1 + std::max(heightOfTree(k1->left), heightOfTree(k1->right));
+
 		k2 = k1;
 	}
 
@@ -243,10 +247,12 @@ class avl_balanced_tree
 		tree_node<K, V>* k2 = k1->right;
 		k1->right = k2->left;
 		k2->left = k1;
-		
-		k1->height = 1 + std::max(heightOfTree(k1->left), heightOfTree(k1->right));
-		k2->height = 1 + std::max(heightOfTree(k2->left), heightOfTree(k2->right));
-		
+
+		k1->height =
+			1 + std::max(heightOfTree(k1->left), heightOfTree(k1->right));
+		k2->height =
+			1 + std::max(heightOfTree(k2->left), heightOfTree(k2->right));
+
 		k1 = k2;
 	}
 
@@ -272,7 +278,8 @@ class avl_balanced_tree
 		int balance_factor = heightOfTree(t->left) - heightOfTree(t->right);
 
 		// Left Left Case
-		if (balance_factor > 1 && heightOfTree(t->left->left) >= heightOfTree(t->left->right))
+		if (balance_factor > 1 &&
+			heightOfTree(t->left->left) >= heightOfTree(t->left->right))
 		{
 			rotateWithLeftChild(t);
 		}
@@ -282,7 +289,8 @@ class avl_balanced_tree
 			doubleWithLeftChild(t);
 		}
 		// Right Right Case
-		else if (balance_factor < -1 && heightOfTree(t->right->right) >= heightOfTree(t->right->left))
+		else if (balance_factor < -1 &&
+				 heightOfTree(t->right->right) >= heightOfTree(t->right->left))
 		{
 			rotateWithRightChild(t);
 		}
@@ -350,7 +358,7 @@ class map
 	{
 		tree_node<K, V>* current_;
 		std::stack<tree_node<K, V>*> stack_;
-		
+
 		iterator() : current_(nullptr) {}
 
 		explicit iterator(tree_node<K, V>* root, bool is_end = false)
@@ -433,10 +441,7 @@ class map
 			return temp;
 		}
 
-		iterator& operator--() override
-		{
-			return *this;
-		}
+		iterator& operator--() override { return *this; }
 
 		iterator operator--(int) override
 		{

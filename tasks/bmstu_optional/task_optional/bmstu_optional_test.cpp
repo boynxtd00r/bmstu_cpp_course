@@ -5,9 +5,9 @@
 #include <array>
 #include <cassert>
 #include <iostream>
+#include <stack>
 #include <string>
 #include <vector>
-#include <stack>
 
 struct Tracker
 {
@@ -785,29 +785,36 @@ TEST(Optional, ExceptionWithTrackedObject)
 	ASSERT_EQ(Tracker::dtor, 1);
 }
 
-bmstu::optional<std::string> findCorrectBraceSequence(const std::string &seq)
+bmstu::optional<std::string> findCorrectBraceSequence(const std::string& seq)
 {
-    std::stack<char> braces;
-    for (char c : seq) {
-        if (c == '(') {
-            braces.push(c);
-        }
-        else if (c == ')') {
-            if (braces.empty()) {
-                return bmstu::nullopt;
-            }
-            braces.pop();
-        }
-    }
-    if (braces.empty()){
-        return seq;
-    }
-    else {
-        return bmstu::nullopt;
-    }
+	std::stack<char> braces;
+	for (char c : seq)
+	{
+		if (c == '(')
+		{
+			braces.push(c);
+		}
+		else if (c == ')')
+		{
+			if (braces.empty())
+			{
+				return bmstu::nullopt;
+			}
+			braces.pop();
+		}
+	}
+	if (braces.empty())
+	{
+		return seq;
+	}
+	else
+	{
+		return bmstu::nullopt;
+	}
 }
 
-TEST(Optional, DummyFunc) {
+TEST(Optional, DummyFunc)
+{
 	ASSERT_EQ("(())()", findCorrectBraceSequence("(())()"));
 	ASSERT_EQ(bmstu::nullopt, findCorrectBraceSequence(")()"));
 	ASSERT_EQ("", findCorrectBraceSequence(""));
