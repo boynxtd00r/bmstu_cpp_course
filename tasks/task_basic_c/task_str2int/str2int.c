@@ -1,13 +1,14 @@
 #include "str2int.h"
-#include <assert.h>
 #include <stdio.h>
 #include <limits.h>
 #include <ctype.h>
+#include <stdlib.h>
 
 int str2int(const char* str)
 {
     if (str == NULL || *str == '\0') {
-        assert(0 && "Empty string");
+        fprintf(stderr, "Empty string\n");
+        abort();
     }
     
     int i = 0;
@@ -22,12 +23,14 @@ int str2int(const char* str)
         sign = -1;
         i++;
         if (str[i] == '\0') {
-            assert(0 && "Invalid format");
+            fprintf(stderr, "Invalid format\n");
+            abort();
         }
     } else if (str[i] == '+') {
         i++;
         if (str[i] == '\0') {
-            assert(0 && "Invalid format");
+            fprintf(stderr, "Invalid format\n");
+            abort();
         }
     }
     
@@ -36,13 +39,16 @@ int str2int(const char* str)
             result = result * 10 + (str[i] - '0');
             
             if (sign == 1 && result > INT_MAX) {
-                assert(0 && "Overflow");
+                fprintf(stderr, "Overflow\n");
+                abort();
             }
             if (sign == -1 && (-result) < INT_MIN) {
-                assert(0 && "Underflow");
+                fprintf(stderr, "Underflow\n");
+                abort();
             }
         } else {
-            assert(0 && "Invalid character");
+            fprintf(stderr, "Invalid character\n");
+            abort();
         }
         i++;
     }
@@ -50,7 +56,8 @@ int str2int(const char* str)
     result *= sign;
     
     if (result > INT_MAX || result < INT_MIN) {
-        assert(0 && "Out of range");
+        fprintf(stderr, "Out of range\n");
+        abort();
     }
     
     return (int)result;

@@ -1,13 +1,15 @@
 #include "int2str.h"
-#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <limits.h>
 
 char* int2str(int number)
 {
     char* str = (char*)malloc(12 * sizeof(char));
-    assert(str != NULL);
+    if (str == NULL) {
+        return NULL;
+    }
     
     int i = 0;
     int is_negative = 0;
@@ -20,7 +22,7 @@ char* int2str(int number)
     
     if (number < 0) {
         is_negative = 1;
-        if (number == -2147483648) {
+        if (number == INT_MIN) {
             strcpy(str, "-2147483648");
             return str;
         }
